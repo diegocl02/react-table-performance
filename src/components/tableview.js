@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Eye} from './randomIcon'
+import { Eye } from './randomIcon'
 
 
 export default class TableView extends Component {
@@ -26,7 +26,7 @@ export default class TableView extends Component {
     getHeader() {
         return (
             <div style={{ display: "flex", flexDirection: "row", }}>
-                <div key={"row-header"} style={this.getCellStyle()}> <b> Icon  </b></div>
+                <div key={"icon-header"} style={this.getCellStyle()}> <b> Icon  </b></div>
                 <div key={"row-header"} style={this.getCellStyle()}> <b> Row #  </b></div>
                 {Object.keys(this.data[0]).map((el, index) => {
                     if (index > 0)
@@ -67,7 +67,9 @@ export default class TableView extends Component {
                                             "inherit" : "whitesmoke"
                                 }}
                                 onClick={() => this.onRowClicked(index)}>
-                                <div key={"col-" + index} style={this.getCellStyle()}> <Eye size={"1.2em"}/> </div>
+                                <div key={"icon-" + index} style={this.getCellStyle()}>
+                                    <Eye size={"1.2em"} color={!this.state.selectedIds.includes(index) ? "black" : "orchid"} />
+                                </div>
                                 <div key={"col-" + index} style={this.getCellStyle()}> {index} </div>
                                 {Object.keys(obj).map((el, index) => {
                                     if (index > 0)
