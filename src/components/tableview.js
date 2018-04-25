@@ -8,7 +8,7 @@ export default class TableView extends Component {
 
     constructor(props) {
         super(props)
-        this.state = { color: "white", selectedIds: [], numberOfRows: 100 }
+        this.state = { color: "white", selectedIds: [], numberOfRows: 100, startUpdateTime: 0,  finishUpdateTime: 0}
     }
 
     getCellStyle() {
@@ -48,6 +48,18 @@ export default class TableView extends Component {
         }
         this.setState({ color: "SkyBlue", selectedIds: newSelectedIds })
 
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        if (nextState.startUpdateTime !== this.state.startUpdateTime /*|| nextState.finishUpdateTime !== this.state.finishUpdateTime*/)
+            return false
+        this.setState({startUpdateTime: Date.now()})
+        return true
+    }
+
+    componentDidUpdate(){
+        // console.log(`component did update`)
+        this.setState({finishUpdateTime: Date.now()})
     }
 
     getDataGrid() {
@@ -93,22 +105,19 @@ export default class TableView extends Component {
                 Select number of Rows from 1 - 1000:
             <input type="number" value={this.state.numberOfRows}
                     onChange={(e) => { this.setState({ numberOfRows: Number(e.target.value) }) }}
-                // onKeyPress={(e) => {
-                //     if(e.key === 'Enter')
-                //         this.setState({numberOfRows: e.target.value})
-                //     }}
                 />
             </label>
         )
     }
 
     render() {
+        console.log('State', this.state)
         return (
             <div style={{ display: "flex", flexDirection: "column", paddingLeft: "5em" }}>
                 {this.numberOfRowsPicker()}
                 {this.getHeader()}
                 {this.getDataGrid()}
-                {}
+                <b> {`Render took ${this.state.finishUpdateTime - this.state.startUpdateTime} milliseconds`} </b>
             </div>
         )
 
